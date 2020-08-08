@@ -80,6 +80,13 @@ main(void)
     expect(eq, mint_parse("AA15"), 26);
   end();
 
+  it("parses readme example correctly");
+    expect(eq, mint_parse("M3"), 4);
+    expect(eq, mint_parse("m3"), 3);
+    expect(eq, mint_parse("A3"), 5);
+    expect(eq, mint_parse("d3"), 2);
+  end();
+
   it("fails on invalid input");
     expect(lt, mint_parse("D1"), MINT_MIN);
     expect(lt, mint_parse("a1"), MINT_MIN);
