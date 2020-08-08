@@ -1,6 +1,6 @@
 #include "mint.h"
 
-enum intv_t {
+enum {
   Intv_P = 0,    /* perfect */
   Intv_M         /* major/minor */
 };
@@ -27,7 +27,7 @@ static int base[] = {
 };
 
 int
-mint_parse(const char* s)
+mint_parse(const char *s)
 {
   int qual_type = -1;
   int diminished = 0;

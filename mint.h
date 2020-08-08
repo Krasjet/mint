@@ -1,13 +1,11 @@
 #ifndef MINT_H
 #define MINT_H
 
-enum {
-  /*
-   * The smallest possible interval value, anything
-   * below this value is an error.
-   */
-  MINT_MIN = -2,
-};
+/*
+ * The smallest possible interval value, anything
+ * below this value is an error.
+ */
+#define MINT_MIN (-2)
 
 /*
  * Convert a music interval string (in shorthand notations) into semitones.
