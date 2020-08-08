@@ -2,7 +2,7 @@
 
 enum intv_t {
   Intv_P = 0,    /* perfect */
-  Intv_M     /* major/minor */
+  Intv_M         /* major/minor */
 };
 
 /* only unison, 4th, 5th can be perfect */
