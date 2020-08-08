@@ -85,6 +85,7 @@ main(void)
     expect(eq, mint_parse("m3"), 3);
     expect(eq, mint_parse("A3"), 5);
     expect(eq, mint_parse("d3"), 2);
+    expect(lt, mint_parse("P3"), MINT_MIN);
   end();
 
   it("fails on invalid input");
