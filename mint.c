@@ -74,7 +74,7 @@ parse_interval(const char* s)
     n = 10 * n + (*s++ - '0');
 
   if (--n < 0)
-    /* we don't support negative interval */
+    /* we don't support negative intervals */
     goto fail;
 
   /* handle compound intervals */

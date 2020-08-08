@@ -22,7 +22,7 @@ enum {
  * We don't accept negative interval number, but just to keep things simple, we
  * do allow interval size to be negative, e.g. doubly diminished unison (`dd1`)
  * is -2 semitones. Therefore, you should check for error by comparing against
- * `MINT_MIN`. The return value would be error if it is less than `MINT_MIN`
+ * `MINT_MIN`. The return value would be error if it is less than `MINT_MIN`.
  */
 int parse_interval(const char* s);
 

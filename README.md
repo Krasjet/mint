@@ -22,10 +22,10 @@ where
 
 For example,
 
-    M3 = major third      = 4 semitones
-    m3 = minor third      = 3 semitones
-    A3 = augmented third  = 5 semitones
-    d3 = diminished third = 2 semitones
+    parse_interval("M3") == 4   /* major third */
+    parse_interval("m3") == 3   /* minor third */
+    parse_interval("A3") == 5   /* augmented third */
+    parse_interval("d3") == 2   /* diminished third */
 
 This notation can be found in many music theory textbooks and references,
 but they probably won't define it using the formal grammar above. This
