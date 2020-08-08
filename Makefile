@@ -1,17 +1,15 @@
-CFLAGS = -Wall -Wextra -std=c99 -g3 -pedantic
+.POSIX:
 
+CFLAGS = -Wall -Wextra -std=c99 -g3 -pedantic
 OBJ = test.o mint.o
 
 run: test
-	./$<
+	./test
 
 test: $(OBJ)
 	$(CC) $(CFLAGS) -o $@ $(OBJ)
 
 $(OBJ): mint.h
-
-.c.o:
-	$(CC) $(CFLAGS) -o $@ -c $<
 
 clean:
 	rm -f test *.o
