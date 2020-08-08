@@ -41,3 +41,6 @@ For example,
     if (mint_parse("P3") < MINT_MIN) {
       error("there is no perfect third!!!");
     }
+
+Since the library itself doesn't depend on anything, even libc, you should be
+able to compile it with any C compiler compatible with ANSI C.
