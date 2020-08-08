@@ -24,6 +24,6 @@ enum {
  * is -2 semitones. Therefore, you should check for error by comparing against
  * `MINT_MIN`. The return value would be error if it is less than `MINT_MIN`.
  */
-int parse_interval(const char* s);
+int mint_parse(const char* s);
 
 #endif

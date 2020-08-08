@@ -22,10 +22,10 @@ where
 
 For example,
 
-    parse_interval("M3") == 4   /* major third */
-    parse_interval("m3") == 3   /* minor third */
-    parse_interval("A3") == 5   /* augmented third */
-    parse_interval("d3") == 2   /* diminished third */
+    mint_parse("M3") == 4   /* major third */
+    mint_parse("m3") == 3   /* minor third */
+    mint_parse("A3") == 5   /* augmented third */
+    mint_parse("d3") == 2   /* diminished third */
 
 This notation can be found in many music theory textbooks and references,
 but they probably won't define it using the formal grammar above. This
@@ -38,6 +38,6 @@ semitones. Therefore, you should check for error by comparing against
 
 For example,
 
-    if (parse_interval("P3") < MINT_MIN) {
+    if (mint_parse("P3") < MINT_MIN) {
       error("there is no perfect third!!!");
     }

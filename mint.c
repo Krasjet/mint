@@ -27,7 +27,7 @@ static int base[] = {
 };
 
 int
-parse_interval(const char* s)
+mint_parse(const char* s)
 {
   int qual_type = -1;
   int diminished = 0;
