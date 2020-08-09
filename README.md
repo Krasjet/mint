@@ -32,10 +32,16 @@ This notation can be found in many music theory textbooks and references, but
 they probably won't define it using the formal grammar above. It should be
 generally understood by musicians, though.
 
-Dependencies
-------------
+Build
+-----
 
-mint does not depend on anything, even libc. You should be able to compile it
-with any C compiler compatible with C99.
+mint does not depend on anything, even libc. Simply copy `mint.c` and `mint.h`
+to your project and add
+
+    #include "mint.h"
+
+to any source file using the library.
+
+You should be able to compile it with any C compiler compatible with C99.
 
 [1]: https://en.wikipedia.org/wiki/Interval_(music)#Shorthand_notation
