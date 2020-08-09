@@ -1,20 +1,7 @@
 #include "mint.h"
 
-enum {
-  Intv_P = 0,    /* perfect */
-  Intv_M         /* major/minor */
-};
-
 /* only unison, 4th, 5th can be perfect */
-static int intv_types[] = {
-  Intv_P,
-  Intv_M,
-  Intv_M,
-  Intv_P,
-  Intv_P,
-  Intv_M,
-  Intv_M,
-};
+static int perfectable[] = { 1, 0, 0, 1, 1, 0, 0};
 
 static int base[] = {
   0, /* P1 */
@@ -26,71 +13,90 @@ static int base[] = {
   11 /* M7 */
 };
 
-int
-mint_parse(const char *s)
-{
-  int qual_type = -1;
-  int diminished = 0;
+static int qual_transfm[] = {
+  [MINT_DOUBLY_DIMINISHED] = -3,
+  [MINT_DIMINISHED] = -2,
+  [MINT_MINOR] = -1,
+  [MINT_MAJOR] = 0,
+  [MINT_PERFECT] = 0,
+  [MINT_AUGMENTED] = 1,
+  [MINT_DOUBLY_AUGMENTED] = 2
+};
 
-  int n = 0;
-  int qual_mod = 0;
-  int octave = 0;
+mint_t
+mint_from_str(const char* s)
+{
+  mint_t intv = {
+    .size = 0
+  };
+  /* -1 = ignored */
+  int perfect = -1;
 
   /* valid qualifiers: P, M, m, A, AA, d, dd */
   switch (*s++) {
     case 'P':
-      qual_type = Intv_P;
+      intv.quality = MINT_PERFECT;
+      perfect = 1;
       break;
     case 'M':
-      qual_type = Intv_M;
+      intv.quality = MINT_MAJOR;
+      perfect = 0;
       break;
     case 'm':
-      qual_type = Intv_M;
-      qual_mod = -1;
+      intv.quality = MINT_MINOR;
+      perfect = 0;
       break;
     case 'A':
       if (*s == 'A') {
-        qual_mod = 2;
+        intv.quality = MINT_DOUBLY_AUGMENTED;
         s++;
       } else {
-        qual_mod = 1;
+        intv.quality = MINT_AUGMENTED;
       }
       break;
     case 'd':
-      diminished = 1;
       if (*s == 'd') {
-        qual_mod = -3;
+        intv.quality = MINT_DOUBLY_DIMINISHED;
         s++;
       } else {
-        qual_mod = -2;
+        intv.quality = MINT_DIMINISHED;
       }
       break;
     default:
       goto fail;
   }
 
-  /* parse integer */
+  /* parse nonnegative integer */
   while ((unsigned)(*s - '0') < 10)
-    n = 10 * n + (*s++ - '0');
+    intv.size = 10 * intv.size + (*s++ - '0');
 
-  if (--n < 0)
+  if (--intv.size < 0)
     /* we don't support negative intervals */
     goto fail;
 
-  /* handle compound intervals */
-  octave = n / 7;
-  n = n % 7;
-
-  if (qual_type != -1 && intv_types[n] != qual_type)
+  if (perfect != -1 && perfect != perfectable[intv.size % 7]) {
     /* type mismatch */
     goto fail;
-
-  if (diminished && intv_types[n] == Intv_P) {
-    /* perfect intervals only shift by 1 when diminished */
-    qual_mod++;
   }
 
-  return 12 * octave + base[n] + qual_mod;
+  return intv;
 fail:
-  return MINT_MIN - 1;
+  intv.size = -1;
+  return intv;
+}
+
+int
+mint_to_semitone(mint_t interval)
+{
+  /* handle compound intervals */
+  int octave = interval.size / 7;
+  int n = interval.size % 7;
+
+  int trans = qual_transfm[interval.quality];
+
+  if (perfectable[n] && interval.quality <= MINT_DIMINISHED){
+    /* perfect intervals only shift by 1 when diminished */
+    trans++;
+  }
+  return 12 * octave + base[n] + trans;
 }

@@ -1,6 +1,6 @@
 .POSIX:
 
-CFLAGS = -Wall -Wextra -ansi -g3 -pedantic
+CFLAGS = -Wall -Wextra -std=c99 -g3 -pedantic
 OBJ = test.o mint.o
 
 run: test

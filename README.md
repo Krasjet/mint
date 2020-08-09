@@ -1,10 +1,11 @@
 mint
 ====
 
-This library contains a parser for converting a music interval in shorthand
-notations into semitones.
+mint is a C library to work music intervals. It contains a parser for shorthand
+notation of music intervals [1] and a utility function to convert interval into
+number of semitones.
 
-The BNF grammar for the notation is
+The BNF grammar for the shorthand notation is
 
     interval ::= quality number
     quality  ::= "P" | "M" | "m" | "A" | "AA" | "d" | "dd"
@@ -22,25 +23,19 @@ where
 
 For example,
 
-    mint_parse("M3") == 4   /* major third */
-    mint_parse("m3") == 3   /* minor third */
-    mint_parse("A3") == 5   /* augmented third */
-    mint_parse("d3") == 2   /* diminished third */
+    mint_to_semitone(mint_from_str("M3")) == 4   /* major third */
+    mint_to_semitone(mint_from_str("m3")) == 3   /* minor third */
+    mint_to_semitone(mint_from_str("A3")) == 5   /* augmented third */
+    mint_to_semitone(mint_from_str("d3")) == 2   /* diminished third */
 
-This notation can be found in many music theory textbooks and references,
-but they probably won't define it using the formal grammar above. This
-notation should be generally understood by musicians, though.
+This notation can be found in many music theory textbooks and references, but
+they probably won't define it using the formal grammar above. It should be
+generally understood by musicians, though.
 
-We don't accept negative interval number, but just to keep things simple, we do
-allow interval size to be negative, e.g. doubly diminished unison (`dd1`) is -2
-semitones. Therefore, you should check for error by comparing against
-`MINT_MIN`, which is the minimum of semitone values, namely -2 for `dd1`.
+Dependencies
+------------
 
-For example,
+mint does not depend on anything, even libc, you should be able to compile it
+with any C compiler compatible with C99.
 
-    if (mint_parse("P3") < MINT_MIN) {
-      error("there is no perfect third!!!");
-    }
-
-Since the library itself doesn't depend on anything, even libc, you should be
-able to compile it with any C compiler compatible with ANSI C.
+[1]: https://en.wikipedia.org/wiki/Interval_(music)#Shorthand_notation
