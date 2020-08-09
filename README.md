@@ -35,7 +35,7 @@ generally understood by musicians, though.
 Dependencies
 ------------
 
-mint does not depend on anything, even libc, you should be able to compile it
+mint does not depend on anything, even libc. You should be able to compile it
 with any C compiler compatible with C99.
 
 [1]: https://en.wikipedia.org/wiki/Interval_(music)#Shorthand_notation
