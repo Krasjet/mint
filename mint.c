@@ -17,39 +17,39 @@ struct mint
 mint_from_str(const char *s)
 {
   struct mint intv = {
-    .size = 0
+    .qoffset = 0,
   };
   /* -1 = ignored */
-  int perfect = -1;
+  int perfect = -1, diminished = 0;
+  int n = 0;
 
   /* valid qualifiers: P, M, m, A, AA, d, dd */
   switch (*s++) {
     case 'P':
-      intv.quality = MINT_PERFECT;
       perfect = 1;
       break;
     case 'M':
-      intv.quality = MINT_MAJOR;
       perfect = 0;
       break;
     case 'm':
-      intv.quality = MINT_MINOR;
       perfect = 0;
+      intv.qoffset = -1;
       break;
     case 'A':
       if (*s == 'A') {
-        intv.quality = MINT_DOUBLY_AUGMENTED;
+        intv.qoffset = 2;
         s++;
       } else {
-        intv.quality = MINT_AUGMENTED;
+        intv.qoffset = 1;
       }
       break;
     case 'd':
+      diminished = 1;
       if (*s == 'd') {
-        intv.quality = MINT_DOUBLY_DIMINISHED;
+        intv.qoffset = -3;
         s++;
       } else {
-        intv.quality = MINT_DIMINISHED;
+        intv.qoffset = -2;
       }
       break;
     default:
@@ -58,15 +58,24 @@ mint_from_str(const char *s)
 
   /* parse nonnegative integer */
   while ((unsigned)(*s - '0') < 10)
-    intv.size = 10 * intv.size + (*s++ - '0');
+    n = 10 * n + (*s++ - '0');
 
-  if (--intv.size < 0)
+  if (--n < 0) {
     /* we don't support negative intervals */
     goto fail;
+  }
 
-  if (perfect != -1 && perfect != perfectable[intv.size % 7]) {
+  intv.size = n;
+  n = n % 7;
+
+  if (perfect != -1 && perfect != perfectable[n]) {
     /* type mismatch */
     goto fail;
+  }
+
+  if (diminished && perfectable[n]) {
+    /* perfect intervals only shift by 1 when diminished */
+    intv.qoffset++;
   }
 
   return intv;
@@ -75,8 +84,36 @@ fail:
   return intv;
 }
 
+enum mint_quality
+mint_get_quality(struct mint interval)
+{
+  /* query with qoffset + 2 */
+  static enum mint_quality perfectable_lookup [] = {
+    MINT_DOUBLY_DIMINISHED, /* -2 */
+    MINT_DIMINISHED,        /* -1 */
+    MINT_PERFECT,           /*  0 */
+    MINT_AUGMENTED,         /*  1 */
+    MINT_DOUBLY_AUGMENTED   /*  2 */
+  };
+  /* query with qoffset + 3 */
+  static enum mint_quality nonperfectable_lookup [] = {
+    MINT_DOUBLY_DIMINISHED, /* -3 */
+    MINT_DIMINISHED,        /* -2 */
+    MINT_MINOR,             /* -1 */
+    MINT_MAJOR,             /*  0 */
+    MINT_AUGMENTED,         /*  1 */
+    MINT_DOUBLY_AUGMENTED   /*  2 */
+  };
+
+  if (perfectable[interval.size % 7])
+    return perfectable_lookup[interval.qoffset + 2];
+
+  return nonperfectable_lookup[interval.qoffset + 3];
+}
+
+
 int
-mint_qualoffset(enum mint_quality qual, int size)
+mint_qoffset(enum mint_quality qual, int size)
 {
   static int offset_base[] = {
     [MINT_DOUBLY_DIMINISHED] = -3,
@@ -100,5 +137,5 @@ mint_to_st(struct mint interval)
 {
   return 12 * (interval.size / 7) /* handle compound intervals */
     + base[interval.size % 7]
-    + mint_qualoffset(interval.quality, interval.size);
+    + interval.qoffset;
 }

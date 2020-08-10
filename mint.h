@@ -15,21 +15,28 @@ enum mint_quality {
 };
 
 /*
- * An invertible representation of music intervals.
+ * An invertible representation of music intervals optimized for computation.
  *
- * mint should have a quality, which is one of
+ * A music interval should have a non-negative, 0-indexed interval size, i.e.
+ * unison = 0, third = 2, etc., and a quality offset, which is the number of
+ * semitones deviate from perfect or major.
  *
- *    dd d m M P A AA
+ * For example, minor third should have
+ *  - size: 2
+ *  - qoffset: -1
+ * and augmented fifth should have
+ *  - size: 4
+ *  - qoffset: 1
  *
- * and a non-negative, 0-indexed interval size, i.e. unison = 0, third = 2,
- * etc. This makes transposition much easier.
+ * The quality of the interval itself is not encoded in the representation, use
+ * mint_get_quality to get the quality of an interval.
  *
  * By convention, we always count from lower pitch to higher pitch, so any
- * interval with negative size is invalid.
+ * interval with negative size is invalid. You should error check against this.
  */
 struct mint {
-  enum mint_quality quality;
   int size; /* < 0 is invalid interval */
+  int qoffset;
 };
 
 /*
@@ -51,22 +58,44 @@ struct mint {
 struct mint mint_from_str(const char *s);
 
 /*
+ * Get the quality of a music interval, which is one of
+ *
+ *    dd d m M P A AA
+ *
+ * This function does no error checking. Make sure you check for parsing error
+ * before passing the result to this function.
+ *
+ * Contracts:
+ *   - interval.size >= 0
+ *   - -2 <= interval.qoffset <= 2 for perfectable intervals (unison, 4th, 5th, octave, etc)
+ *   - -3 <= interval.qoffset <= 2 otherwise
+ */
+enum mint_quality mint_get_quality(struct mint interval);
+
+
+/*
  * Get the offset of interval quality in semitones.
  *
- * Note that interval size is also needed to determine the size.
+ * Note that interval size is also needed to determine the size. It is roughly
+ * the inverse of mint_get_quality.
  *
  * This function does no error checking.
+ *
+ * Contracts:
+ *   - size >= 0
  */
-int mint_qualoffset(enum mint_quality qual, int size);
+int mint_qoffset(enum mint_quality qual, int size);
 
 /*
  * Convert music interval to semitones (st).
  *
- * This function is not injective and thus not invertible.
+ * The conversion is not injective and thus not invertible.
  *
- * This function does no error checking. If you are using the result from
- * mint_from_str, make sure to check for parsing error before passing the
- * result to this function.
+ * This function does no error checking. Make sure you check for parsing error
+ * before passing the result to this function.
+ *
+ * Contracts:
+ *   - interval.size >= 0
  */
 int mint_to_st(struct mint interval);
 
