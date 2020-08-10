@@ -137,6 +137,25 @@ main(void)
     end();
   end();
 
+  describe("mint_qualoffset");
+    it("gets offset for perfectable interval correctly");
+      expecteq(mint_qualoffset(MINT_PERFECT, 0), 0);
+      expecteq(mint_qualoffset(MINT_AUGMENTED, 0), 1);
+      expecteq(mint_qualoffset(MINT_DOUBLY_AUGMENTED, 0), 2);
+      expecteq(mint_qualoffset(MINT_DIMINISHED, 0), -1);
+      expecteq(mint_qualoffset(MINT_DOUBLY_DIMINISHED, 0), -2);
+    end();
+
+    it("gets offset for nonperfectable interval correctly");
+      expecteq(mint_qualoffset(MINT_MAJOR, 2), 0);
+      expecteq(mint_qualoffset(MINT_MINOR, 2), -1);
+      expecteq(mint_qualoffset(MINT_AUGMENTED, 2), 1);
+      expecteq(mint_qualoffset(MINT_DOUBLY_AUGMENTED, 2), 2);
+      expecteq(mint_qualoffset(MINT_DIMINISHED, 2), -2);
+      expecteq(mint_qualoffset(MINT_DOUBLY_DIMINISHED, 2), -3);
+    end();
+  end();
+
   describe("mint_to_st");
     it("converts simple intervals correctly");
       expecteq(mint_to_st(mint_from_str("dd1")), -2);

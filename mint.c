@@ -13,18 +13,8 @@ static int base[] = {
   11 /* M7 */
 };
 
-static int qual_transfm[] = {
-  [MINT_DOUBLY_DIMINISHED] = -3,
-  [MINT_DIMINISHED] = -2,
-  [MINT_MINOR] = -1,
-  [MINT_MAJOR] = 0,
-  [MINT_PERFECT] = 0,
-  [MINT_AUGMENTED] = 1,
-  [MINT_DOUBLY_AUGMENTED] = 2
-};
-
 mint_t
-mint_from_str(const char* s)
+mint_from_str(const char *s)
 {
   mint_t intv = {
     .size = 0
@@ -86,17 +76,29 @@ fail:
 }
 
 int
+mint_qualoffset(enum mint_quality qual, int size)
+{
+  static int offset_base[] = {
+    [MINT_DOUBLY_DIMINISHED] = -3,
+    [MINT_DIMINISHED] = -2,
+    [MINT_MINOR] = -1,
+    [MINT_MAJOR] = 0,
+    [MINT_PERFECT] = 0,
+    [MINT_AUGMENTED] = 1,
+    [MINT_DOUBLY_AUGMENTED] = 2
+  };
+
+  if (perfectable[size % 7] && qual <= MINT_DIMINISHED){
+    /* perfect intervals only shift by 1 when diminished */
+    return offset_base[qual] + 1;
+  }
+  return offset_base[qual];
+}
+
+int
 mint_to_st(mint_t interval)
 {
-  /* handle compound intervals */
-  int octave = interval.size / 7;
-  int n = interval.size % 7;
-
-  int trans = qual_transfm[interval.quality];
-
-  if (perfectable[n] && interval.quality <= MINT_DIMINISHED){
-    /* perfect intervals only shift by 1 when diminished */
-    trans++;
-  }
-  return 12 * octave + base[n] + trans;
+  return 12 * (interval.size / 7) /* handle compound intervals */
+    + base[interval.size % 7]
+    + mint_qualoffset(interval.quality, interval.size);
 }

@@ -51,6 +51,15 @@ typedef struct {
 mint_t mint_from_str(const char *s);
 
 /*
+ * Get the offset of interval quality in semitones.
+ *
+ * Note that interval size is also needed to determine the size.
+ *
+ * This function does no error checking.
+ */
+int mint_qualoffset(enum mint_quality qual, int size);
+
+/*
  * Convert music interval to semitones (st).
  *
  * This function is not injective and thus not invertible.
