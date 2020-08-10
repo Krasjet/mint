@@ -15,7 +15,7 @@ enum mint_quality {
 };
 
 /*
- * The type definition of a music interval.
+ * An invertible representation of music intervals.
  *
  * mint_t should have a quality, which is one of
  *
@@ -48,15 +48,17 @@ typedef struct {
  * If parsing error occurs, the size of the returned mint_t is set to be
  * negative.
  */
-mint_t mint_from_str(const char* s);
+mint_t mint_from_str(const char *s);
 
 /*
- * Convert music interval to semitones
+ * Convert music interval to semitones (st).
  *
- * This function has no error checking. If you are using the result from
+ * This function is not injective and thus not invertible.
+ *
+ * This function does no error checking. If you are using the result from
  * mint_from_str, make sure to check for parsing error before passing the
  * result to this function.
  */
-int mint_to_semitone(mint_t interval);
+int mint_to_st(mint_t interval);
 
 #endif

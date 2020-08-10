@@ -86,7 +86,7 @@ fail:
 }
 
 int
-mint_to_semitone(mint_t interval)
+mint_to_st(mint_t interval)
 {
   /* handle compound intervals */
   int octave = interval.size / 7;
