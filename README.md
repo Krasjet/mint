@@ -1,9 +1,15 @@
 mint
 ====
 
-mint is a C library to work music intervals. It contains a parser for shorthand
-notation of music intervals [1] and a utility function to convert interval into
-number of semitones.
+mint is a C library to work music intervals. It contains a parser that converts
+shorthand notation of music intervals [1] into an *invertible*, unambiguous
+representation of music intervals, and several utility functions to work with
+such representation, e.g. convert an interval into number of semitones.
+
+The documentation of this library is in `mint.h`.
+
+Grammar
+-------
 
 The BNF grammar for the shorthand notation is
 
