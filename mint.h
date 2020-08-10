@@ -17,7 +17,7 @@ enum mint_quality {
 /*
  * An invertible representation of music intervals.
  *
- * mint_t should have a quality, which is one of
+ * mint should have a quality, which is one of
  *
  *    dd d m M P A AA
  *
@@ -27,10 +27,10 @@ enum mint_quality {
  * By convention, we always count from lower pitch to higher pitch, so any
  * interval with negative size is invalid.
  */
-typedef struct {
+struct mint {
   enum mint_quality quality;
   int size; /* < 0 is invalid interval */
-} mint_t;
+};
 
 /*
  * Parse music intervals from string (shorthand notations).
@@ -45,10 +45,10 @@ typedef struct {
  * We don't accept negative interval size, but just to keep things simple, we
  * do allow things like doubly diminished unison (`dd1`), which is -2 semitones.
  *
- * If parsing error occurs, the size of the returned mint_t is set to be
+ * If parsing error occurs, the size of the returned mint is set to be
  * negative.
  */
-mint_t mint_from_str(const char *s);
+struct mint mint_from_str(const char *s);
 
 /*
  * Get the offset of interval quality in semitones.
@@ -68,6 +68,6 @@ int mint_qualoffset(enum mint_quality qual, int size);
  * mint_from_str, make sure to check for parsing error before passing the
  * result to this function.
  */
-int mint_to_st(mint_t interval);
+int mint_to_st(struct mint interval);
 
 #endif

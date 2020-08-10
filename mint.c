@@ -13,10 +13,10 @@ static int base[] = {
   11 /* M7 */
 };
 
-mint_t
+struct mint
 mint_from_str(const char *s)
 {
-  mint_t intv = {
+  struct mint intv = {
     .size = 0
   };
   /* -1 = ignored */
@@ -96,7 +96,7 @@ mint_qualoffset(enum mint_quality qual, int size)
 }
 
 int
-mint_to_st(mint_t interval)
+mint_to_st(struct mint interval)
 {
   return 12 * (interval.size / 7) /* handle compound intervals */
     + base[interval.size % 7]
