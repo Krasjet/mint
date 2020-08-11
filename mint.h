@@ -19,7 +19,7 @@ enum mint_quality {
  *
  * A music interval should have a non-negative, 0-indexed interval size, i.e.
  * unison = 0, third = 2, etc., and a quality offset, which is the number of
- * semitones deviate from perfect or major.
+ * semitones deviate from perfect or major (i.e. major scale).
  *
  * For example, minor third should have
  *  - size: 2
