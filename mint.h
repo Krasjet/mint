@@ -55,7 +55,7 @@ struct mint {
  * If parsing error occurs, the size of the returned mint is set to be
  * negative.
  */
-struct mint mint_from_str(const char *s);
+struct mint mint_parse(const char *s);
 
 /*
  * Get the quality of a music interval, which is one of

@@ -29,10 +29,10 @@ where
 
 For example,
 
-    mint_to_st(mint_from_str("M3")) == 4   /* major third */
-    mint_to_st(mint_from_str("m3")) == 3   /* minor third */
-    mint_to_st(mint_from_str("A3")) == 5   /* augmented third */
-    mint_to_st(mint_from_str("d3")) == 2   /* diminished third */
+    mint_to_st(mint_parse("M3")) == 4   /* major third */
+    mint_to_st(mint_parse("m3")) == 3   /* minor third */
+    mint_to_st(mint_parse("A3")) == 5   /* augmented third */
+    mint_to_st(mint_parse("d3")) == 2   /* diminished third */
 
 This notation can be found in many music theory textbooks and references, but
 they probably won't define it using the formal grammar above. It should be

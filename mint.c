@@ -14,7 +14,7 @@ static int base[] = {
 };
 
 struct mint
-mint_from_str(const char *s)
+mint_parse(const char *s)
 {
   struct mint intv = {
     .qoffset = 0,
