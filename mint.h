@@ -29,7 +29,7 @@ enum mint_quality {
  *  - qoffset: 1
  *
  * The quality of the interval itself is not encoded in the representation, use
- * mint_get_quality to get the quality of an interval.
+ * mint_quality to get the quality of an interval.
  *
  * By convention, we always count from lower pitch to higher pitch, so any
  * interval with negative size is invalid. You should error check against this.
@@ -70,14 +70,14 @@ struct mint mint_parse(const char *s);
  *   - -2 <= interval.qoffset <= 2 for perfectable intervals (unison, 4th, 5th, octave, etc)
  *   - -3 <= interval.qoffset <= 2 otherwise
  */
-enum mint_quality mint_get_quality(struct mint interval);
+enum mint_quality mint_quality(struct mint interval);
 
 
 /*
  * Get the offset of interval quality in semitones.
  *
  * Note that interval size is also needed to determine the size. It is roughly
- * the inverse of mint_get_quality.
+ * the inverse of mint_quality.
  *
  * This function does no error checking.
  *

@@ -85,7 +85,7 @@ fail:
 }
 
 enum mint_quality
-mint_get_quality(struct mint interval)
+mint_quality(struct mint interval)
 {
   /* query with qoffset + 2 */
   static enum mint_quality perfectable_lookup [] = {

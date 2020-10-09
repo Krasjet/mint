@@ -1,5 +1,5 @@
 #include "mint.h"
-#include <stdio.h>
+#include "test.h"
 #include <stdlib.h>
 
 void
@@ -24,43 +24,25 @@ expectfail(struct mint intv)
   }
 }
 
-void
-describe(const char* s)
-{
-  puts(s);
-}
-
-void
-it(const char* s)
-{
-  printf("  it %s ", s);
-}
-
-void
-end(void)
-{
-  puts("");
-}
-
 int
 main(void)
 {
-  describe("mint_get_quality");
+  describe("mint_quality");
     it("gets quality for perfectable interval correctly");
-      expecteq(mint_get_quality((struct mint) {0, 0}), MINT_PERFECT);
-      expecteq(mint_get_quality((struct mint) {0, 1}), MINT_AUGMENTED);
-      expecteq(mint_get_quality((struct mint) {0, 2}), MINT_DOUBLY_AUGMENTED);
-      expecteq(mint_get_quality((struct mint) {0, -1}), MINT_DIMINISHED);
-      expecteq(mint_get_quality((struct mint) {0, -2}), MINT_DOUBLY_DIMINISHED);
+      expecteq(mint_quality((struct mint) {0, 0}), MINT_PERFECT);
+      expecteq(mint_quality((struct mint) {0, 1}), MINT_AUGMENTED);
+      expecteq(mint_quality((struct mint) {0, 2}), MINT_DOUBLY_AUGMENTED);
+      expecteq(mint_quality((struct mint) {0, -1}), MINT_DIMINISHED);
+      expecteq(mint_quality((struct mint) {0, -2}), MINT_DOUBLY_DIMINISHED);
     end();
 
     it("gets quality for nonperfectable interval correctly");
-      expecteq(mint_get_quality((struct mint) {2, 0}), MINT_MAJOR);
-      expecteq(mint_get_quality((struct mint) {2, -1}), MINT_MINOR);
-      expecteq(mint_get_quality((struct mint) {2, 1}), MINT_AUGMENTED);
-      expecteq(mint_get_quality((struct mint) {2, 2}), MINT_DOUBLY_AUGMENTED);
-      expecteq(mint_get_quality((struct mint) {2, -2}), MINT_DIMINISHED);
-      expecteq(mint_get_quality((struct mint) {2, -3}), MINT_DOUBLY_DIMINISHED);
+      expecteq(mint_quality((struct mint) {2, 0}), MINT_MAJOR);
+      expecteq(mint_quality((struct mint) {2, -1}), MINT_MINOR);
+      expecteq(mint_quality((struct mint) {2, 1}), MINT_AUGMENTED);
+      expecteq(mint_quality((struct mint) {2, 2}), MINT_DOUBLY_AUGMENTED);
+      expecteq(mint_quality((struct mint) {2, -2}), MINT_DIMINISHED);
+      expecteq(mint_quality((struct mint) {2, -3}), MINT_DOUBLY_DIMINISHED);
     end();
   end();
 
@@ -86,66 +68,66 @@ main(void)
   describe("mint_parse");
     it("parses simple intervals correctly");
       struct mint dd1 = mint_parse("dd1");
-      expecteq(mint_get_quality(dd1), MINT_DOUBLY_DIMINISHED);
+      expecteq(mint_quality(dd1), MINT_DOUBLY_DIMINISHED);
       expecteq(dd1.size, 0);
 
       struct mint d1 = mint_parse("d1");
-      expecteq(mint_get_quality(d1), MINT_DIMINISHED);
+      expecteq(mint_quality(d1), MINT_DIMINISHED);
       expecteq(d1.size, 0);
 
       struct mint P1 = mint_parse("P1");
-      expecteq(mint_get_quality(P1), MINT_PERFECT);
+      expecteq(mint_quality(P1), MINT_PERFECT);
       expecteq(P1.size, 0);
 
       struct mint A1 = mint_parse("A1");
-      expecteq(mint_get_quality(A1), MINT_AUGMENTED);
+      expecteq(mint_quality(A1), MINT_AUGMENTED);
       expecteq(A1.size, 0);
 
       struct mint AA1 = mint_parse("AA1");
-      expecteq(mint_get_quality(AA1), MINT_DOUBLY_AUGMENTED);
+      expecteq(mint_quality(AA1), MINT_DOUBLY_AUGMENTED);
       expecteq(AA1.size, 0);
 
       struct mint m3 = mint_parse("m3");
-      expecteq(mint_get_quality(m3), MINT_MINOR);
+      expecteq(mint_quality(m3), MINT_MINOR);
       expecteq(m3.size, 2);
 
       struct mint M3 = mint_parse("M3");
-      expecteq(mint_get_quality(M3), MINT_MAJOR);
+      expecteq(mint_quality(M3), MINT_MAJOR);
       expecteq(M3.size, 2);
     end();
 
     it("parses compound intervals correctly");
       struct mint dd8 = mint_parse("dd8");
-      expecteq(mint_get_quality(dd8), MINT_DOUBLY_DIMINISHED);
+      expecteq(mint_quality(dd8), MINT_DOUBLY_DIMINISHED);
       expecteq(dd8.size, 7);
 
       struct mint d8 = mint_parse("d8");
-      expecteq(mint_get_quality(d8), MINT_DIMINISHED);
+      expecteq(mint_quality(d8), MINT_DIMINISHED);
       expecteq(d8.size, 7);
 
       struct mint P8 = mint_parse("P8");
-      expecteq(mint_get_quality(P8), MINT_PERFECT);
+      expecteq(mint_quality(P8), MINT_PERFECT);
       expecteq(P8.size, 7);
 
       struct mint A8 = mint_parse("A8");
-      expecteq(mint_get_quality(A8), MINT_AUGMENTED);
+      expecteq(mint_quality(A8), MINT_AUGMENTED);
       expecteq(A8.size, 7);
 
       struct mint AA8 = mint_parse("AA8");
-      expecteq(mint_get_quality(AA8), MINT_DOUBLY_AUGMENTED);
+      expecteq(mint_quality(AA8), MINT_DOUBLY_AUGMENTED);
       expecteq(AA8.size, 7);
 
       struct mint m9 = mint_parse("m9");
-      expecteq(mint_get_quality(m9), MINT_MINOR);
+      expecteq(mint_quality(m9), MINT_MINOR);
       expecteq(m9.size, 8);
 
       struct mint M9 = mint_parse("M9");
-      expecteq(mint_get_quality(M9), MINT_MAJOR);
+      expecteq(mint_quality(M9), MINT_MAJOR);
       expecteq(M9.size, 8);
 
       /* just in case */
       struct mint P15 = mint_parse("P15");
-      expecteq(mint_get_quality(P15), MINT_PERFECT);
+      expecteq(mint_quality(P15), MINT_PERFECT);
       expecteq(P15.size, 14);
     end();
 
