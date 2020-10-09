@@ -29,6 +29,6 @@ transpose.o trx.o: mint.h pitch.h transpose.h
 test_transpose.o: test.h mint.h pitch.h transpose.h
 
 clean:
-	rm -f $(BIN) *.o *.a
+	rm -f $(BIN) *.o
 
 .PHONY: run clean
