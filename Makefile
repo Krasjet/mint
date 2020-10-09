@@ -1,5 +1,7 @@
 .POSIX:
 
+PREFIX = /usr/local
+
 CFLAGS = -Wall -Wextra -std=c99 -g3 -pedantic
 LIB_OBJ = transpose.o pitch.o mint.o
 BIN = test_mint test_pitch test_transpose trx
@@ -28,7 +30,26 @@ test_pitch.o: pitch.h test.h
 transpose.o trx.o: mint.h pitch.h transpose.h
 test_transpose.o: test.h mint.h pitch.h transpose.h
 
-clean:
-	rm -f $(BIN) *.o
+# for pkg-config
+mint.pc: mint.pc.in
+	cp mint.pc.in $@
+	sed '1i\prefix=$(PREFIX)' mint.pc.in > $@
 
-.PHONY: run clean
+libmint.a: $(LIB_OBJ)
+	ar -rcs $@ $(LIB_OBJ)
+
+install: mint.pc mint.h pitch.h transpose.h libmint.a
+	install -m644 -d $(DESTDIR)$(PREFIX)/{include/mint,lib/pkgconfig}
+	install -m755 libmint.a $(DESTDIR)$(PREFIX)/lib/
+	install -m644 mint.h pitch.h transpose.h $(DESTDIR)$(PREFIX)/include/mint/
+	install -m644 mint.pc $(DESTDIR)$(PREFIX)/lib/pkgconfig/
+
+uninstall:
+	rm -rf $(DESTDIR)$(PREFIX)/include/mint/
+	rm -f $(DESTDIR)$(PREFIX)/lib/libmint.a
+	rm -f $(DESTDIR)$(PREFIX)/lib/pkgconfig/mint.pc
+
+clean:
+	rm -f $(BIN) *.o *.a mint.pc
+
+.PHONY: run clean install uninstall

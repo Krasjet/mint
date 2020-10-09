@@ -89,9 +89,20 @@ the corresponding `.c` and `.h` files to your project and add, for example
 
     #include "mint.h"
 
-to any source file using this library.
+to any source file using this library. You should be able to compile it with
+any C compiler compatible with C99.
 
-You should be able to compile it with any C compiler compatible with C99.
+Alternatively, use
+
+    $ make install
+
+to install a static library to your system (path can be customized via
+`PREFIX`), then use
+
+    $ pkg-config --cflags mint
+    $ pkg-config --libs mint
+
+to get compiler and linker flags.
 
 trx
 ---

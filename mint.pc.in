@@ -1,0 +1,8 @@
+includedir=${prefix}/include
+libdir=${prefix}/lib
+
+Name: mint
+Description: Library to work with music intervals, (tonal) pitches, and transpositions
+Version: 1.0.0
+Libs: -L${libdir} -lmint
+Cflags: -I${includedir}/mint
