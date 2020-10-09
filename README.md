@@ -84,7 +84,8 @@ mint consists of three component:
 `mint` and `pitch` are independent of each other, but `transpose` depends on
 both `mint` and `pitch`.
 
-This library does not have any external dependencies, even libc. Simply copy the corresponding `.c` and `.h` files to your project and add, for example
+This library does not have any external dependencies, even libc. Simply copy
+the corresponding `.c` and `.h` files to your project and add, for example
 
     #include "mint.h"
 
