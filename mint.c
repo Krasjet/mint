@@ -25,35 +25,35 @@ mint_parse(const char *s)
 
   /* valid qualifiers: P, M, m, A, AA, d, dd */
   switch (*s++) {
-    case 'P':
-      perfect = 1;
-      break;
-    case 'M':
-      perfect = 0;
-      break;
-    case 'm':
-      perfect = 0;
-      intv.qoffset = -1;
-      break;
-    case 'A':
-      if (*s == 'A') {
-        intv.qoffset = 2;
-        s++;
-      } else {
-        intv.qoffset = 1;
-      }
-      break;
-    case 'd':
-      diminished = 1;
-      if (*s == 'd') {
-        intv.qoffset = -3;
-        s++;
-      } else {
-        intv.qoffset = -2;
-      }
-      break;
-    default:
-      goto fail;
+  case 'P':
+    perfect = 1;
+    break;
+  case 'M':
+    perfect = 0;
+    break;
+  case 'm':
+    perfect = 0;
+    intv.qoffset = -1;
+    break;
+  case 'A':
+    if (*s == 'A') {
+      intv.qoffset = 2;
+      s++;
+    } else {
+      intv.qoffset = 1;
+    }
+    break;
+  case 'd':
+    diminished = 1;
+    if (*s == 'd') {
+      intv.qoffset = -3;
+      s++;
+    } else {
+      intv.qoffset = -2;
+    }
+    break;
+  default:
+    goto fail;
   }
 
   /* parse nonnegative integer */
