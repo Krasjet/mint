@@ -1,2 +1,6 @@
 *.o
-test
+*.a
+*.pc
+test_mint
+test_pitch
+test_transpose

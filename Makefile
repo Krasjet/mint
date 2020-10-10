@@ -32,14 +32,15 @@ test_transpose.o: test.h mint.h pitch.h transpose.h
 
 # for pkg-config
 mint.pc: mint.pc.in
-	cp mint.pc.in $@
-	sed '1i\prefix=$(PREFIX)' mint.pc.in > $@
+	echo 'prefix=$(PREFIX)' > $@
+	cat mint.pc.in >> mint.pc
 
 libmint.a: $(LIB_OBJ)
 	ar -rcs $@ $(LIB_OBJ)
 
 install: mint.pc mint.h pitch.h transpose.h libmint.a
-	install -m644 -d $(DESTDIR)$(PREFIX)/{include/mint,lib/pkgconfig}
+	install -m755 -d $(DESTDIR)$(PREFIX)/include/mint
+	install -m755 -d $(DESTDIR)$(PREFIX)/lib/pkgconfig
 	install -m755 libmint.a $(DESTDIR)$(PREFIX)/lib/
 	install -m644 mint.h pitch.h transpose.h $(DESTDIR)$(PREFIX)/include/mint/
 	install -m644 mint.pc $(DESTDIR)$(PREFIX)/lib/pkgconfig/
