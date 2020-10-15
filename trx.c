@@ -14,7 +14,7 @@ void
 die(const char *msg)
 {
   fprintf(stderr, "error: %s\n", msg);
-	exit(1);
+  exit(1);
 }
 
 int

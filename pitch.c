@@ -128,7 +128,8 @@ pitch_parse(const char* s, struct pitch *out)
 }
 
 int
-pitch_pc_to_idx(struct pitch_class pc){
+pitch_pc_to_idx(struct pitch_class pc)
+{
   return step_semitones[pc.letter] + pc.accidental;
 }
 
